@@ -13,6 +13,7 @@ function addTeamView(id, name, score){
   var increase_button = $("<button class = increase-button>+</button>");
   $(increase_button).click(function(){
     increase_score(id);
+    //add a method to sort
   });
   name_template.text(name);
   score_template.text(score);
@@ -32,7 +33,8 @@ function increase_score(id){
     contentType: "application/json; charset=utf-8",
     data : JSON.stringify(team_id),
     success: function(result){
-        
+        let sorted = sort_scores(result.scoreboard);
+        display_scoreboard(sorted);
     },
     error: function(request, status, error){
         console.log("Error");
@@ -41,6 +43,11 @@ function increase_score(id){
         console.log(error)
     }
   });
+}
+
+function sort_scores(scoreboard) {
+  scoreboard.sort((a,b) => b.score - a.score); //top to bottom decreasing
+  return scoreboard;
 }
 
 $(document).ready(function(){
